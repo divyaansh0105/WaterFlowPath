@@ -3,12 +3,12 @@
 #include"Findpath.h"
 
 Point3D Findpath::nextpoint(Point3D& currpoint, Triangulation& terrain)
-{
+{	
 	vector<Triangle> triangles = terrain.triangles();
 	vector<Point3D> uniquepoints = terrain.uniquePoints();
 	Point3D currentpoint = currpoint;
 	vector<Point3D> connectedvertics;
-
+	//Check all the points current point is connected to
 	for (auto triangle : triangles)
 	{
 		Point3D P1, P2, P3;
@@ -41,7 +41,7 @@ Point3D Findpath::nextpoint(Point3D& currpoint, Triangulation& terrain)
 	{
 		double currentslope;
 		currentslope = mathUtility.slope(currentpoint, it);
-		
+		//Pushing the most steepest point because water will flow that way
 		if (currentslope >= steepestpoint && currentpoint.z() > it.z())
 		{
 			final = it;
@@ -55,7 +55,7 @@ vector<Point3D> Findpath::generatepath(Point3D& highestpoint, Triangulation& ter
 	vector<Point3D> result;
 	Point3D currentpoint = highestpoint;
 	Point3D end = mathUtility.findlowestPoint(terrain);
-
+	//Starting with hgihest point and finding the next point until the next point is lowest in the terrain
 	while (true)
 	{
 		Point3D newpoint = nextpoint(currentpoint, terrain);
